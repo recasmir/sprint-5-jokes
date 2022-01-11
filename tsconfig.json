@@ -1,12 +1,15 @@
 {
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "target":"ES2017",
+    "lib": [
+      "ES6","DOM"
+    ],
+    "target":"ES6",
     "module":"commonjs",
     "strict": true,
     "strictNullChecks": true,
-    "rootDir": ".",
-    "outDir": "dist",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "sourceMap": true
   },
   "include": [
