@@ -78,31 +78,14 @@ btnJoke!.addEventListener('click', (event) => {
 
 const randomBackground = (): void => {
   let randomBg: number = Math.floor(Math.random() * 8);
-  switch (randomBg){
-    case 0: bgBlob!.style.background="url('img/blob-1.svg')";
-    break
-    case 1: bgBlob!.style.background="url('img/blob-2.svg')";
-    break
-    case 2: bgBlob!.style.background="url('img/blob-3.svg')";
-    break
-    case 3: bgBlob!.style.background="url('img/blob-4.svg')";
-    break
-    case 4: bgBlob!.style.background="url('img/blob-5.svg')";
-    break
-    case 5: bgBlob!.style.background="url('img/blob-6.svg')";
-    break
-    case 6: bgBlob!.style.background="url('img/blob-7.svg')";
-    break
-  }
+  bgBlob!.style.background=`url('img/blob-${randomBg}.svg')`;
   bgBlob!.style.backgroundRepeat = "no-repeat";
   bgBlob!.style.backgroundAttachment = "fixed";
   bgBlob!.style.backgroundPosition = "center";
 }
 
 btnLowScore!.addEventListener('click', () => getInfoJoke(Score.Low)); 
-
 btnMidScore!.addEventListener('click', () => getInfoJoke(Score.Medium)); 
-
 btnHighScore!.addEventListener('click', () => getInfoJoke(Score.High)); 
 
 const getInfoJoke = (score:Score):void => {
@@ -176,6 +159,7 @@ fetch(`${API_Weather}`)
     HTMLResponseWeather!.innerHTML = `<img src="http://openweathermap.org/img/wn/${text.weather[0].icon}@2x.png">`;
     HTMLResponseTemp!.innerHTML = (text.main.temp).toString() + 'ºC';
  })
+ .catch(error => console.log(error))
 }
 
 // Extra info - calling two APIs simultanously - https://gomakethings.com/waiting-for-multiple-all-api-responses-to-complete-with-the-vanilla-js-promise.all-method/

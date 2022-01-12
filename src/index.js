@@ -54,29 +54,7 @@ btnJoke!.addEventListener('click', (event) => {
 }); */
 var randomBackground = function () {
     var randomBg = Math.floor(Math.random() * 8);
-    switch (randomBg) {
-        case 0:
-            bgBlob.style.background = "url('img/blob-1.svg')";
-            break;
-        case 1:
-            bgBlob.style.background = "url('img/blob-2.svg')";
-            break;
-        case 2:
-            bgBlob.style.background = "url('img/blob-3.svg')";
-            break;
-        case 3:
-            bgBlob.style.background = "url('img/blob-4.svg')";
-            break;
-        case 4:
-            bgBlob.style.background = "url('img/blob-5.svg')";
-            break;
-        case 5:
-            bgBlob.style.background = "url('img/blob-6.svg')";
-            break;
-        case 6:
-            bgBlob.style.background = "url('img/blob-7.svg')";
-            break;
-    }
+    bgBlob.style.background = "url('img/blob-".concat(randomBg, ".svg')");
     bgBlob.style.backgroundRepeat = "no-repeat";
     bgBlob.style.backgroundAttachment = "fixed";
     bgBlob.style.backgroundPosition = "center";
@@ -107,6 +85,6 @@ window.onload = function () {
         .then(function (text) {
         HTMLResponseWeather.innerHTML = "<img src=\"http://openweathermap.org/img/wn/".concat(text.weather[0].icon, "@2x.png\">");
         HTMLResponseTemp.innerHTML = (text.main.temp).toString() + 'ºC';
-    });
+    })["catch"](function (error) { return console.log(error); });
 };
 // Extra info - calling two APIs simultanously - https://gomakethings.com/waiting-for-multiple-all-api-responses-to-complete-with-the-vanilla-js-promise.all-method/
