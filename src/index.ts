@@ -39,47 +39,39 @@ enum Score{
 
 const reportJokes: Tracking[] = [];
 
+//Fetch Dad Joke
+const getDadJoke = ():void => {
+fetch(`${API_URL}`, {
+  method: 'GET',
+  headers: {
+    "Accept": "application/json",
+  },
+})
+  .then(response => response.json())
+  .then((text: Joke) => HTMLResponse!.innerHTML = text.joke)
+  .catch(error => console.log(error))
+}
+
+//Fetch Chuck Norris Joke   
+const getChuckJoke = (): void => {
+  fetch(`${API_ChuckNorris}`)
+  .then(response => response.json())
+  .then((text: ChuckNorris) => HTMLResponse!.innerHTML = text.value)
+  .catch(error => console.log(error))
+}
+
+//Ask for a random joke
 btnJoke!.addEventListener('click', () => {
   randomBackground();
-  Promise.all([
-    fetch(`${API_URL}`, {
-      method: 'GET',
-      headers: {
-        "Accept": "application/json",
-      },
-    }),
-    fetch(`${API_ChuckNorris}`)])
-    //Get a JSON object from each of the responses and create an array with the reponses of both APIs using map
-    .then(responses => Promise.all(responses.map(response => response.json())))
-    .then((data: Joke[] | ChuckNorris[]) => {
-      let randomJoke: number = Math.floor(Math.random() * 2);
-      switch (randomJoke){
-        case 0: 
-        if(typeof data ==='Joke'){
-          HTMLResponse!.innerHTML = data[0].joke;
-        }
-        break
-        case 1: HTMLResponse!.innerHTML = data[1].value;
-        break
-      }
-    })
-    .catch(error => console.log(error))
-});
+  let randomJoke: number = Math.floor(Math.random() * 2);
+  if(randomJoke === 0){
+    getDadJoke()
+  }else{
+    getChuckJoke()
+  }
+})
 
-/* Old call of the jokes API
-
-btnJoke!.addEventListener('click', (event) => {
-  fetch(`${API_URL}`, {
-    method: 'GET',
-    headers: {
-      "Accept": "application/json",
-    },
-  })
-   .then(response => response.json())
-   .then((text: Joke) => HTMLResponse!.innerHTML = text.joke)
-}); */
-
-const randomBackground = (): void => {
+const randomBackground = ():void => {
   let randomBg: number = Math.floor(Math.random() * 8);
   bgBlob!.style.background=`url('img/blob-${randomBg}.svg')`;
   bgBlob!.style.backgroundRepeat = "no-repeat";
@@ -165,4 +157,29 @@ fetch(`${API_Weather}`)
  .catch(error => console.log(error))
 }
 
-// Extra info - calling two APIs simultanously - https://gomakethings.com/waiting-for-multiple-all-api-responses-to-complete-with-the-vanilla-js-promise.all-method/
+
+/* Extra info - calling two APIs simultanously - https://gomakethings.com/waiting-for-multiple-all-api-responses-to-complete-with-the-vanilla-js-promise.all-method/
+
+btnJoke!.addEventListener('click', () => {
+  randomBackground();
+  Promise.all([
+    fetch(`${API_URL}`, {
+      method: 'GET',
+      headers: {
+        "Accept": "application/json",
+      },
+    }),
+    fetch(`${API_ChuckNorris}`)])
+    //Get a JSON object from each of the responses and create an array with the reponses of both APIs using map
+    .then(responses => Promise.all(responses.map(response => response.json())))
+    .then(data=> {
+      let randomJoke: number = Math.floor(Math.random() * 2);
+      switch (randomJoke){
+        case 0: HTMLResponse!.innerHTML = data[0].joke;
+        break
+        case 1: HTMLResponse!.innerHTML = data[1].value;
+        break
+      }
+    })
+    .catch(error => console.log(error))
+}); */

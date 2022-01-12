@@ -15,43 +15,34 @@ var Score;
     Score[Score["High"] = 3] = "High";
 })(Score || (Score = {}));
 var reportJokes = [];
+//Fetch Dad Joke
+var getDadJoke = function () {
+    fetch("".concat(API_URL), {
+        method: 'GET',
+        headers: {
+            "Accept": "application/json"
+        }
+    })
+        .then(function (response) { return response.json(); })
+        .then(function (text) { return HTMLResponse.innerHTML = text.joke; })["catch"](function (error) { return console.log(error); });
+};
+//Fetch Chuck Norris Joke   
+var getChuckJoke = function () {
+    fetch("".concat(API_ChuckNorris))
+        .then(function (response) { return response.json(); })
+        .then(function (text) { return HTMLResponse.innerHTML = text.value; })["catch"](function (error) { return console.log(error); });
+};
+//Ask for a random joke
 btnJoke.addEventListener('click', function () {
     randomBackground();
-    Promise.all([
-        fetch("".concat(API_URL), {
-            method: 'GET',
-            headers: {
-                "Accept": "application/json"
-            }
-        }),
-        fetch("".concat(API_ChuckNorris))
-    ])
-        //Get a JSON object from each of the responses and create an array with the reponses of both APIs using map
-        .then(function (responses) { return Promise.all(responses.map(function (response) { return response.json(); })); })
-        .then(function (data) {
-        var randomJoke = Math.floor(Math.random() * 2);
-        switch (randomJoke) {
-            case 0:
-                HTMLResponse.innerHTML = data[0].joke;
-                break;
-            case 1:
-                HTMLResponse.innerHTML = data[1].value;
-                break;
-        }
-    })["catch"](function (error) { return console.log(error); });
+    var randomJoke = Math.floor(Math.random() * 2);
+    if (randomJoke === 0) {
+        getDadJoke();
+    }
+    else {
+        getChuckJoke();
+    }
 });
-/* Old call of the jokes API
-
-btnJoke!.addEventListener('click', (event) => {
-  fetch(`${API_URL}`, {
-    method: 'GET',
-    headers: {
-      "Accept": "application/json",
-    },
-  })
-   .then(response => response.json())
-   .then((text: Joke) => HTMLResponse!.innerHTML = text.joke)
-}); */
 var randomBackground = function () {
     var randomBg = Math.floor(Math.random() * 8);
     bgBlob.style.background = "url('img/blob-".concat(randomBg, ".svg')");
@@ -87,4 +78,28 @@ window.onload = function () {
         HTMLResponseTemp.innerHTML = (text.main.temp).toString() + 'ºC';
     })["catch"](function (error) { return console.log(error); });
 };
-// Extra info - calling two APIs simultanously - https://gomakethings.com/waiting-for-multiple-all-api-responses-to-complete-with-the-vanilla-js-promise.all-method/
+/* Extra info - calling two APIs simultanously - https://gomakethings.com/waiting-for-multiple-all-api-responses-to-complete-with-the-vanilla-js-promise.all-method/
+
+btnJoke!.addEventListener('click', () => {
+  randomBackground();
+  Promise.all([
+    fetch(`${API_URL}`, {
+      method: 'GET',
+      headers: {
+        "Accept": "application/json",
+      },
+    }),
+    fetch(`${API_ChuckNorris}`)])
+    //Get a JSON object from each of the responses and create an array with the reponses of both APIs using map
+    .then(responses => Promise.all(responses.map(response => response.json())))
+    .then(data=> {
+      let randomJoke: number = Math.floor(Math.random() * 2);
+      switch (randomJoke){
+        case 0: HTMLResponse!.innerHTML = data[0].joke;
+        break
+        case 1: HTMLResponse!.innerHTML = data[1].value;
+        break
+      }
+    })
+    .catch(error => console.log(error))
+}); */ 
