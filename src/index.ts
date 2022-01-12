@@ -51,10 +51,13 @@ btnJoke!.addEventListener('click', () => {
     fetch(`${API_ChuckNorris}`)])
     //Get a JSON object from each of the responses and create an array with the reponses of both APIs using map
     .then(responses => Promise.all(responses.map(response => response.json())))
-    .then(data => {
+    .then((data: Joke[] | ChuckNorris[]) => {
       let randomJoke: number = Math.floor(Math.random() * 2);
       switch (randomJoke){
-        case 0: HTMLResponse!.innerHTML = data[0].joke;
+        case 0: 
+        if(typeof data ==='Joke'){
+          HTMLResponse!.innerHTML = data[0].joke;
+        }
         break
         case 1: HTMLResponse!.innerHTML = data[1].value;
         break
